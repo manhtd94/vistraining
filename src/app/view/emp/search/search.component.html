@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">EmpNo</label>
+      <input type="text" [(ngModel)]="searchForm.empNo" class="form-control" id="inputEmail2" placeholder="Email">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">EmpName</label>
+      <input type="text" [(ngModel)]="searchForm.empName" class="form-control" id="inputPassword3" placeholder="Password">
+    </div>
+    <div class="form-group col-md-6">
+        <label for="inputState">Phòng ban</label>
+        <select id="inputState" class="form-control" [(ngModel)]="searchForm.deptNo">
+          <option value=0>Choose...</option>
+          <option *ngFor="let dept of depts" [value]="dept.deptNo">{{ dept.dName }}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">Người quản lý</label>
+        <select id="inputState" class="form-control" [(ngModel)]="searchForm.mngNo">
+          <option value=0 selected="selected">Choose...</option>
+          <option *ngFor="let emp of emps" [value]="emp.id">{{ emp.name }}</option>
+        </select>
+      </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Sal From</label>
+      <input type="number" class="form-control" id="inputEmail4" placeholder="Salary From" [(ngModel)]="searchForm.salFrom">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Sal To</label>
+      <input type="nubmer" class="form-control" id="inputPassword5" placeholder="Salary To" [(ngModel)]="searchForm.salTo">
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary mr-4" (click)=search()>Search</button>
+  <button type="button" [routerLink]="['/create']" routerLinkActive="router-link-active"  class="btn btn-primary">Create</button>
+  <button type="button" [routerLink]="['/time-off']" routerLinkActive="router-link-active"  class="btn btn-primary">Time Off</button>
+
+
+  <table class="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Thao tác</th>
+          <th scope="col">Mã nhân viên</th>
+          <th scope="col">Tên nhân viên</th>
+          <th scope="col">Phòng ban</th>
+          <th scope="col">Người quản lý</th>
+          <th scope="col">Ngày bắt đầu</th>
+          <th scope="col">Công việc</th>
+          <th scope="col">Lương</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of employees | paginate : { itemsPerPage: 5, currentPage: p }; index as i ">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>
+            <div class="center-me">
+              <button class="btn btn-success fa fa-edit" [routerLink]="['/edit/' + emp.id]" routerLinkActive="router-link-active"></button>
+              <button class="btn btn-danger fa fa-times-circle-o" (click)="delEmp(emp.id)"></button>
+            </div>
+          </td>
+          <td>{{ emp.id }}</td>
+          <td>{{ emp.name }}</td>
+          <td>{{ emp.deptName }}</td>
+          <td>{{ emp.management }}</td>
+          <td>{{ emp.hireDate | date: 'dd-MM-yyyy'}}</td>
+          <td>{{ emp.job }}</td>
+          <td>{{ emp.salary }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+</div>
+
+
